@@ -1,7 +1,6 @@
-package org.batsy.core.property;
+package org.batsy.core.service;
 
 import org.batsy.core.exception.BatsyException;
-import org.batsy.core.service.IBatsyService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,11 +10,11 @@ import java.util.logging.Logger;
 /**
  * Created by ufuk on 21.10.2016.
  */
-public class ApplicationProperties implements IBatsyService {
+public class PropertyService implements IBatsyService {
 
-    private static Logger logger = Logger.getLogger(ApplicationProperties.class.getSimpleName());
+    private static Logger logger = Logger.getLogger(PropertyService.class.getSimpleName());
 
-    private static final String PROPERTY_FILE_NAME = "app.properties";
+    private static final String PROPERTY_FILE_NAME = "batsy.properties";
     private static Properties properties = null;
 
     @Override

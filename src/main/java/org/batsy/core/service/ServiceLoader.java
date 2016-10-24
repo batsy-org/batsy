@@ -1,9 +1,14 @@
 package org.batsy.core.service;
 
 import org.batsy.core.exception.BatsyException;
+import org.batsy.core.http.RequestMethod;
+import org.batsy.core.servlet.MethodSpecification;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -15,7 +20,15 @@ public class ServiceLoader {
 
     private static List<IBatsyService> SERVICES = new ArrayList<>();
 
-    public static void addServiceRunner(IBatsyService service) {
+    private static Map<String, MethodSpecification> REQUEST_MAP = new HashMap<>();
+
+    static {
+        addBatsyService(new PropertyService());
+        addBatsyService(new AnnotationService());
+        addBatsyService(new WebServerService());
+    }
+
+    public static void addBatsyService(IBatsyService service) {
         SERVICES.add(service);
     }
 
@@ -25,4 +38,13 @@ public class ServiceLoader {
             logger.info(service.getClass().getName() + " started.");
         }
     }
+
+    public static void putRequestMap(String path, Class clazz, Method method, RequestMethod requestMethod) {
+        REQUEST_MAP.put(path, new MethodSpecification(clazz, method, requestMethod));
+    }
+
+    public static Map<String, MethodSpecification> getRequestMap() {
+        return REQUEST_MAP;
+    }
+
 }
