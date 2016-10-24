@@ -8,9 +8,4 @@ public class BatsyApplication {
     public static void run(Class clazz) throws BatsyException {
         ServiceLoader.runAll();
     }
-
-    @Deprecated
-    private static void runAllServices(Class clazz) throws BatsyException {
-
-    }
 }
