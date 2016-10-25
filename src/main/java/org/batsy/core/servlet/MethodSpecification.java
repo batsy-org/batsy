@@ -4,6 +4,10 @@ import org.batsy.core.http.RequestMethod;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ufuk on 24.10.2016.
@@ -13,12 +17,21 @@ public class MethodSpecification implements Serializable {
     private Class clazz;
     private Method method;
     private RequestMethod requestMethod;
-    //TODO private Object
+    private List<ParameterSpecification> parameters;
 
-    public MethodSpecification(Class clazz, Method method, RequestMethod requestMethod) {
+    public MethodSpecification(Class clazz, Method method, RequestMethod requestMethod, List<ParameterSpecification> parameters) {
         this.clazz = clazz;
         this.method = method;
         this.requestMethod = requestMethod;
+        this.parameters = parameters;
+    }
+
+    public void setParameters(List<ParameterSpecification> parameters) {
+        this.parameters = parameters;
+    }
+
+    public List<ParameterSpecification> getParameters() {
+        return parameters;
     }
 
     public Class getClazz() {

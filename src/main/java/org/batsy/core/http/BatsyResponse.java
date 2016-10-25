@@ -1,6 +1,6 @@
 package org.batsy.core.http;
 
-import com.google.gson.GsonBuilder;
+import org.batsy.core.util.JsonUtil;
 
 import java.io.Serializable;
 
@@ -25,7 +25,7 @@ public class BatsyResponse<T> implements Serializable {
     }
 
     public String getJsonResult() {
-        return new GsonBuilder().create().toJson(this.result);
+        return JsonUtil.toJson(this.result);
     }
 
     public int getStatusCode() {

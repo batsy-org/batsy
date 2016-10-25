@@ -20,8 +20,6 @@ public class ServiceLoader {
 
     private static List<IBatsyService> SERVICES = new ArrayList<>();
 
-    private static Map<String, MethodSpecification> REQUEST_MAP = new HashMap<>();
-
     static {
         addBatsyService(new PropertyService());
         addBatsyService(new AnnotationService());
@@ -39,19 +37,5 @@ public class ServiceLoader {
         }
     }
 
-    public static void putRequestMap(String path, Class clazz, Method method, RequestMethod requestMethod) {
-        if (isPathContains(path)) {
-            throw new BatsyException("Path already mapped! " + path);
-        }
-        REQUEST_MAP.put(path, new MethodSpecification(clazz, method, requestMethod));
-    }
-
-    private static boolean isPathContains(String path) {
-        return REQUEST_MAP.containsKey(path);
-    }
-
-    public static Map<String, MethodSpecification> getRequestMap() {
-        return REQUEST_MAP;
-    }
 
 }
