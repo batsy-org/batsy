@@ -21,7 +21,7 @@ public class WebServerService implements IBatsyService{
             Tomcat tomcat = new Tomcat();
             tomcat.setPort(Integer.parseInt(PropertyService.getProperty("batsy.server.port", "8080")));
             tomcat.setBaseDir(".");
-            tomcat.addWebapp("/", new File(WEB_APP_DOC_BASE).getAbsolutePath());
+            //tomcat.addWebapp("/", new File(WEB_APP_DOC_BASE).getAbsolutePath());
             Context context = tomcat.addContext(PropertyService.getProperty("batsy.server.contextPath", "/"), new File(".").getAbsolutePath());
 
             Tomcat.addServlet(context, "batsyServlet", new BatsyServlet());
@@ -31,7 +31,7 @@ public class WebServerService implements IBatsyService{
             tomcat.getHost().setAutoDeploy(true);
             tomcat.start();
             tomcat.getServer().await();
-        } catch (LifecycleException | ServletException e) {
+        } catch (LifecycleException e) {
             throw new BatsyException(e.getMessage(), e);
         }
     }
