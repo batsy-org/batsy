@@ -14,16 +14,26 @@ import java.util.Map;
  */
 public class MethodSpecification implements Serializable {
 
+    private String path;
     private Class clazz;
     private Method method;
     private RequestMethod requestMethod;
     private List<ParameterSpecification> parameters;
 
-    public MethodSpecification(Class clazz, Method method, RequestMethod requestMethod, List<ParameterSpecification> parameters) {
+    public MethodSpecification(String path, Class clazz, Method method, RequestMethod requestMethod, List<ParameterSpecification> parameters) {
+        this.path = path;
         this.clazz = clazz;
         this.method = method;
         this.requestMethod = requestMethod;
         this.parameters = parameters;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public void setParameters(List<ParameterSpecification> parameters) {
