@@ -19,7 +19,10 @@
   <body>
     <header>
       <div class="inner">
-        <h1>Batsy</h1>
+        <h1>
+			Batsy
+			<img height="75" src="https://camo.githubusercontent.com/33cc188d765b43a4048837f90a76fc178b936d16/68747470733a2f2f696d6167652e73707265616473686972746d656469612e6e65742f696d6167652d7365727665722f76312f64657369676e732f3132313338373338332c77696474682533443137382c6865696768742533443137382e706e67" />
+		</h1>
         <h2>A Tiny Java Restful Services Framework</h2>
         <a href="https://github.com/ufukhalis/batsy" class="button"><small>View project on</small> GitHub</a>
       </div>
@@ -44,7 +47,7 @@
 </p>
 
 <pre>
-	<code class="language-go" data-lang="go">
+	<code>
 public class YourApplication {
 	public static void main(String... args) throws BatsyException {
 		BatsyApplication.run(YourApplication.class);
@@ -53,33 +56,95 @@ public class YourApplication {
 	</code>
 </pre>
 
+<p>
+	Then you need to add your resource folder <strong>batsy.properties</strong>. In batsy.properties you can give context path and port as you see.
+</p>
+<pre>
+	<code>
+batsy.server.contextPath = /BatsyTest
+batsy.server.port = 8080
+	</code>
+</pre>
+
+That's it!. Now you can run your program.
 
 <h3>
-<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating pages manually</h3>
+<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create Your First Service</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>
+First, create a class and annotated with <code>@RestController</code>. This means your service methods will be in this class.
+</p>
+
+</p>
+<pre>
+	<code>
+@RestController
+public class YourService {
+
+}
+	</code>
+</pre>
+
+<p>
+After that write your methods. Then annotated them <code>@RequestMapping</code> and give them paths and request methods.
+</p>
+<p>
+Then in method parameters use <code>@QueryParam</code> (for query string parameters) or <code>@PathParam</code>. Like this.
+</p>
+
+<pre>
+	<code>
+@RestController
+public class YourService {
+	@RequestMapping(path = "/path/{name}", method = RequestMethod.GET)
+    public String greeting(@QueryParam(paramName = "yourName") String yourName, 
+	 @PathParam(paramName = "name") String name) {
+	 
+        return "Hello " + yourName + " I am " + name;
+    }
+}
+	</code>
+</pre>
+
+<pre>
+Request your browser the path, localhost:8080/BatsyTest/path/batsy?yourName=ufuk</br>
+Then result is, Hello ufuk I am batsy
+</pre>
+
+<p>That's it, you created your first service. Easy to use.</p>
+
+<p>Also you can use BatsyResponse in your method return type. Like this.</p>
+Note : I recommend that way in your service response.
+<pre>
+	<code>
+@RestController
+public class YourService {
+	@RequestMapping(path = "/path", method = RequestMethod.GET)
+    public BatsyResponse<YourDTO> greeting(@QueryParam(paramName = "name") String name) {
+	 
+        new BatsyResponse<YourDTO>(new YourDTO().setName(name), HttpStatusCode.OK);
+    }
+}
+	</code>
+</pre>
 
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-<p>You can @mention a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor’s GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>Batsy developed by <a href="https://github.com/ufukhalis" class="user-mention">@ufukhalis</a>, in 2016</p>
 
 <h3>
 <a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support or Contact</h3>
 
-<p>Contact me if you have a problem. Mail : <strong>ufukhalis@gmail.com</strong></p>
+<p>Use Batsy, give feedback, contact me or support me, Thanks for everything. Mail : <strong>ufukhalis@gmail.com</strong></p>
         </section>
 
         <aside id="sidebar">
-          <a href="https://github.com/ufukhalis/batsy/zipball/master" class="button">
+          <a href="https://github.com/ufukhalis/batsy/releases/download/0.0.1/batsy-rs-core-0.0.1-SNAPSHOT-jar-with-dependencies.jar" class="button">
             <small>Download</small>
-            .zip file
+            .jar file
           </a>
-          <a href="https://github.com/ufukhalis/batsy/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
+         
           <p class="repo-owner"><a href="https://github.com/ufukhalis/batsy"></a> is maintained by <a href="https://github.com/ufukhalis">ufukhalis</a>.</p>
           
         </aside>
