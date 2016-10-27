@@ -3,4 +3,4 @@
 # Batsy Restful Service Framework
 Lightweight Java Restful Service Framework.
 
-Batsy is a experimental project.
+For details visit : https://ufukhalis.github.io/batsy/
