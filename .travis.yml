@@ -9,8 +9,7 @@ before_deploy:
 
 deploy:
   provider: releases
-  user: "ufukhalis"
-  password: "ufuk.halis123"
+  api_key: ${api_key}
   file: "${FOO}"
   skip_cleanup: true
   on:
