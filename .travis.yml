@@ -1,0 +1,22 @@
+language: java
+jdk:
+- oraclejdk8
+script:
+- mvn clean compile assembly:single
+
+before_deploy:
+- export FOO=$(ls target/batsy-rs-core-*.jar)
+
+deploy:
+  provider: releases
+  user: "ufukhalis"
+  password: "ufuk.halis123"
+  file: "${FOO}"
+  skip_cleanup: true
+  on:
+    tags: true
+    #all_branches: true
+branches:
+      only:
+      - master
+      - /v\d+\.\d+[a-z]/
