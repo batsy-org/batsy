@@ -8,17 +8,33 @@ import java.io.Serializable;
 public class ParameterSpecification implements Serializable {
 
     public enum Type{
-        QUERY, PATH
+        QUERY, PATH, BODY
     }
 
     private String paramName;
-    private String defaultValue;
+    private Object value;
     private Type type;
+    private Class classType;
 
-    public ParameterSpecification(String paramName, String defaultValue, Type type) {
+    public ParameterSpecification(String paramName, Object value, Type type) {
         this.paramName = paramName;
-        this.defaultValue = defaultValue;
+        this.value = value;
         this.type = type;
+    }
+
+    public ParameterSpecification(String paramName, Object value, Type type, Class classType) {
+        this.paramName = paramName;
+        this.value = value;
+        this.type = type;
+        this.classType = classType;
+    }
+
+    public void setClassType(Class classType) {
+        this.classType = classType;
+    }
+
+    public Class getClassType() {
+        return classType;
     }
 
     public String getParamName() {
@@ -29,12 +45,12 @@ public class ParameterSpecification implements Serializable {
         this.paramName = paramName;
     }
 
-    public String getDefaultValue() {
-        return defaultValue;
+    public Object getValue() {
+        return value;
     }
 
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
+    public void setValue(Object value) {
+        this.value = value;
     }
 
     public Type getType() {

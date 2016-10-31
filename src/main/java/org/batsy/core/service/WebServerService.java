@@ -8,12 +8,14 @@ import org.batsy.core.servlet.BatsyServlet;
 
 import javax.servlet.ServletException;
 import java.io.File;
+import java.util.logging.Logger;
 
 /**
  * Created by ufuk on 24.10.2016.
  */
 public class WebServerService implements IBatsyService{
     private static final String WEB_APP_DOC_BASE = "src/main/webapp/";
+    private static final Logger logger = Logger.getLogger(WebServerService.class.getSimpleName());
 
     @Override
     public void start() throws BatsyException {
@@ -30,6 +32,7 @@ public class WebServerService implements IBatsyService{
             tomcat.getHost().setDeployOnStartup(true);
             tomcat.getHost().setAutoDeploy(true);
             tomcat.start();
+            logger.info("Tomcat Started at " + tomcat.getServer().getAddress() + ":" + tomcat.getConnector().getPort());
             tomcat.getServer().await();
         } catch (LifecycleException e) {
             throw new BatsyException(e.getMessage(), e);
