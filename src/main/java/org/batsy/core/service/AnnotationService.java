@@ -1,9 +1,6 @@
 package org.batsy.core.service;
 
-import org.batsy.core.annotation.PathParam;
-import org.batsy.core.annotation.QueryParam;
-import org.batsy.core.annotation.RequestMapping;
-import org.batsy.core.annotation.RestController;
+import org.batsy.core.annotation.*;
 import org.batsy.core.exception.BatsyException;
 import org.batsy.core.servlet.ParameterSpecification;
 import org.batsy.core.util.PackageUtil;
@@ -33,18 +30,29 @@ public class AnnotationService implements IBatsyService {
                             RequestMapping requestMapping = (RequestMapping) annotation;
 
                             List<ParameterSpecification> params = new ArrayList<>();
-                            Arrays.stream(method.getParameterAnnotations()).forEach(p -> {
-                                if (p[0] instanceof QueryParam) {
-                                    QueryParam param = (QueryParam) p[0];
-                                    params.add(new ParameterSpecification(param.paramName(), param.defaultValue(), ParameterSpecification.Type.QUERY));
-                                } else if (p[0] instanceof PathParam){
-                                    PathParam param = (PathParam) p[0];
-                                    if (!requestMapping.path().contains(param.paramName())) {
-                                        throw new BatsyException(requestMapping.path() + " has not " + param.paramName());
+
+                            final Annotation[][] paramAnnotations = method.getParameterAnnotations();
+                            final Class[] paramTypes = method.getParameterTypes();
+                            for (int i = 0; i < paramAnnotations.length; i++) {
+                                for (Annotation a : paramAnnotations[i]) {
+                                    //TODO what?
+                                    if (a instanceof QueryParam) {
+                                        QueryParam param = (QueryParam) a;
+                                        params.add(new ParameterSpecification(param.paramName(), param.defaultValue(), ParameterSpecification.Type.QUERY));
+                                    } else if (a instanceof PathParam){
+                                        PathParam param = (PathParam) a;
+                                        if (!requestMapping.path().contains(param.paramName())) {
+                                            throw new BatsyException(requestMapping.path() + " has not " + param.paramName());
+                                        }
+                                        params.add(new ParameterSpecification(param.paramName(), null, ParameterSpecification.Type.PATH));
+                                    } else if (a instanceof BodyParam) {
+                                        final Class type =  paramTypes[i];
+                                        params.add(new ParameterSpecification(null, null, ParameterSpecification.Type.BODY, type));
+                                    } else {
+                                        throw new BatsyException("Annotation not defined!");
                                     }
-                                    params.add(new ParameterSpecification(param.paramName(), param.defaultValue(), ParameterSpecification.Type.PATH));
                                 }
-                            });
+                            }
 
                             RequestMapUtil.putRequestMap(requestMapping.path(), clazz, method, requestMapping.method(), params);
                             logger.info(requestMapping.path() + " mapped");

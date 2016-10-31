@@ -1,10 +1,13 @@
 package org.batsy.core.util;
 
+import org.batsy.core.exception.BatsyException;
 import org.batsy.core.servlet.MethodSpecification;
 import org.batsy.core.servlet.ParameterSpecification;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.batsy.core.util.RequestMapUtil.PATH_PARAM_DELIMETER;
 import static org.batsy.core.util.RequestMapUtil.REQUEST_PATH_DELIMETER;
@@ -51,10 +54,10 @@ public final class BatsyUtil {
         return specification;
     }
 
-    public static String[] getMethodParams(MethodSpecification specification) {
-        String[] params = new String[specification.getParameters().size()];
+    public static Object[] getMethodParams(MethodSpecification specification) {
+        Object[] params = new Object[specification.getParameters().size()];
         for (int i = 0; i < params.length; i++) {
-            params[i] = specification.getParameters().get(i).getDefaultValue();
+            params[i] = specification.getParameters().get(i).getValue();
         }
         return params;
     }
@@ -63,14 +66,21 @@ public final class BatsyUtil {
         specification.getParameters().forEach(p -> {
             if (p.getType() == ParameterSpecification.Type.QUERY) {
                 String value = request.getParameter(p.getParamName());
-                p.setDefaultValue(value);
+                p.setValue(value);
             } else if (p.getType() == ParameterSpecification.Type.PATH) {
                 String[] requestPathArray = BatsyUtil.getRequestPath(request).split(REQUEST_PATH_DELIMETER);
                 String[] pathArray = specification.getPath().split(REQUEST_PATH_DELIMETER);
                 for (int i = 0; i < pathArray.length; i++) {
                     if (pathArray[i].contains("{")) {
-                        p.setDefaultValue(requestPathArray[i]);
+                        p.setValue(requestPathArray[i]);
                     }
+                }
+            } else if (p.getType() == ParameterSpecification.Type.BODY) {
+                try {
+                    String body = request.getReader().lines().collect(Collectors.joining());
+                    p.setValue(JsonUtil.fromJson(body, p.getClassType()));
+                } catch (IOException e) {
+                    throw new BatsyException(e.getMessage(), e);
                 }
             }
         });
